@@ -36,3 +36,13 @@
                      根据ARP分组得知,发送方IP地址为10.0.0.2,硬件地址为00:50:56:8a:8a:b0,接收方IP地址为10.0.0.22,硬件地址为00:50:56:8a:e8:87;<br/>
                      根据协议分级功能查看各协议所占百分比,发现SSH协议占比最大;<br/>
                      使用追踪TCP流功能,发现信息均被SSH加密过;<br/>
+                     浏览所有分组,发现两个txt.gz文件,尝试解压出gz文件-----失败;<br/>
+                     观察gz附近的几个分组,寻找可用的信息-----失败;<br/>
+                     尝试在搜索框中根据关键字搜索相关分组-----失败;<br/>
+                     暂时没有下一步思路......<br/>
+        (7)PkCrack-已知明文攻击题:尝试使用Advanced RAR Password Recovery中的Brute-force暴力破解功能,尝试1-5位密码的暴力破解-----失败;<br/>
+                                 尝试使用Advanced RAR Password Recovery中的Plain-text破解功能,将已经给出的zip包中的文件解压后重新压缩,破解密码,发现两个zip文件的压缩方式不同-----失败;<br/>
+                                 尝试使用Advanced RAR Password Recovery中的Plain-text破解功能,直接使用已经给出的zip比对破解,得到secret.txt文件,打开文件得到答案;<br/>
+        (8)Birthday-用字典破解zip密码:尝试使用Advanced RAR Password Recovery中的Brute-force暴力破解功能,尝试1-8位密码的暴力破解,所需时间解密过长-----失败;<br/>
+                                     已知密码长度即类型,使用Zip Password Tool暴力破解,选择密码长度范围及取值类型,即可得到zip密码值,与题目给出的信息比对无误,用密码解压zip,得到flag.txt,得到答案;<br/>
+
