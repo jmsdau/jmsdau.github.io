@@ -1,48 +1,99 @@
-#现在的github太丑,先做个进度记录,尽快改好! <br/><br/>
-1.在Github上搭建个人博客:地址为https://jmsdau.github.io/ <br/><br/>
-2.翻墙:(1)在Vultr官网注册账号; <br/>
-       (2)创建服务器vps; <br/>
-       (3)安装Xshell软件，文件-新建-填入服务器IP地址-输入用户名(root)-填入密码-连接; <br/>
-       (4)分别运行以下指令; <br/>
-       (5)分别密码、端口、加密方式; <br/>
-       (6)下载Shadowsocks，并写入(5)中设置的端口号及密码; <br/>
-       (7)启动; <br/><br/>
-3.用vmware建立linux虚拟机; <br/><br/>
-4.Misc:(1)Signln-入门题:学会了答案提交规则，即"flag{}"; <br/>
-       (2)LSB-图片隐写题:尝试右键查看图片属性，查找flag字段-----失败; <br/>
-                         尝试使用notepad打开图片，并用xssee解码后查找flag字段-----失败; <br/>
-                         尝试使用stegsolve打开图片-----成功; <br/>
-                          ①下载stegsolve; <br/>
-                          ②配置java环境时出错,原因是:从jdk-9之后就要同时安装jdk与jre了，安装后的配置方法是: <br/>
-                            计算机-属性-高级系统设置-环境变量-系统变量 <br/>
-                            JAVA_HOME=jdk安装路径 <br/>
-                            JRE_HOME=jre安装路径 <br/>
-                            PATH=;%JAVA_HOME%\bin;%JRE_HOME%\bin <br/>
-                            CLASSPATH=.;%JAVA_HOME%\lib;%JRE_HOME%\lib; <br/>
-                          ③打开执行stegsolve.jar:在命令行(开始菜单--运行cmd)输入:java -jar <全路径> <br/>
-                          ④打开图片,疯狂点击右键,得到二维码,得到答案;  <br/>                             
-       (3)Exif-图片隐写题:尝试右键查看图片属性，查找flag字段-----失败; <br/>                                 
-                         尝试使用notepad打开图片，并用二进制、十六进制解码后查找flag字段-----失败; <br/>                                 
-                         尝试使用ASCII解码图片-----成功; <br/>                                 
-                         ①查找flag{}字段对应的ASCII码值 <br/>                                 
-                         ②查看图片所含的exif信息,寻找可疑字段102,108,97,103,123......125 <br/>                                 
-                         ③将以上可疑字段逐个进行ASCII解码,得到答案; <br/>                               
-       (4)docx-隐写题:尝试直接打开docx文件,文件-选项-隐藏文字-打印隐藏文字------失败; <br/>                                 
-                      尝试查看文档属性摘要------失败; <br/>                                 
-                      尝试查看文档中隐藏的图片,文件-选项-word选项-高级-显示文档内容-显示图片框------失败; <br/>                                
-                      尝试将文件后缀名改为zip,解压后发现flag.xml文件,得到答案-----成功; <br/>
-       (5)Forensics1-流量分析题:尝试以Wireshark打开文件,根据协议分级功能查看各协议所占百分比,根据长度排序,查看长度较大的几个分组,发现前面几个分组均为连续分组,找到不连续的分组,按时间顺序还原分组列表,找到其后发送的几个的分组,发现一个文件,右键点击显示分组字节后,得出答案;<br/>
-       (6)Forensics2-流量分析题:尝试以Wireshark打开文件:<br/>
-                     根据ARP分组得知,发送方IP地址为10.0.0.2,硬件地址为00:50:56:8a:8a:b0,接收方IP地址为10.0.0.22,硬件地址为00:50:56:8a:e8:87;<br/>
-                     根据协议分级功能查看各协议所占百分比,发现SSH协议占比最大;<br/>
-                     使用追踪TCP流功能,发现信息均被SSH加密过;<br/>
-                     浏览所有分组,发现两个txt.gz文件,尝试解压出gz文件-----失败;<br/>
-                     观察gz附近的几个分组,寻找可用的信息-----失败;<br/>
-                     尝试在搜索框中根据关键字搜索相关分组-----失败;<br/>
-                     暂时没有下一步思路......<br/>
-        (7)PkCrack-已知明文攻击题:尝试使用Advanced RAR Password Recovery中的Brute-force暴力破解功能,尝试1-5位密码的暴力破解-----失败;<br/>
-                                 尝试使用Advanced RAR Password Recovery中的Plain-text破解功能,将已经给出的zip包中的文件解压后重新压缩,破解密码,发现两个zip文件的压缩方式不同-----失败;<br/>
-                                 尝试使用Advanced RAR Password Recovery中的Plain-text破解功能,直接使用已经给出的zip比对破解,得到secret.txt文件,打开文件得到答案;<br/>
-        (8)Birthday-用字典破解zip密码:尝试使用Advanced RAR Password Recovery中的Brute-force暴力破解功能,尝试1-8位密码的暴力破解,所需时间解密过长-----失败;<br/>
-                                     已知密码长度即类型,使用Zip Password Tool暴力破解,选择密码长度范围及取值类型,即可得到zip密码值,与题目给出的信息比对无误,用密码解压zip,得到flag.txt,得到答案;<br/>
+-----------2019-02-22-----------
+</br>1.搭建个人博客:地址为https://jmsdau.github.io/
+</br>2.翻墙:(1)在Vultr官网注册账号;
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(2)创建服务器vps;
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(3)安装Xshell软件，文件-新建-填入服务器IP地址
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-输入用户名(root)-填入密码-连接;
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(4)分别运行以下指令;
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(5)分别密码、端口、加密方式;
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(6)下载Shadowsocks，写入(5)中设置的端口及密码;
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(7)启动;
+</br>3.用vmware建立linux虚拟机;
+</br>
+</br>
+</br>-----------2019-02-23-----------
+</br>4.Signln-入门:学会答案提交规则，即"flag{}";
+</br>5.LSB-图片隐写:尝试右键查看图片属性，查找flag字段;
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;尝试使用notepad打开图片，并用xssee解码后查找flag字段;
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;尝试使用stegsolve打开图片;
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;①下载stegsolve;
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;②配置java环境时出错:从jdk-9之后就要同时安装jdk与jre
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安装后的配置方法是:
 
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;计算机-属性-高级系统设置-环境变量-系统变量
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JAVA_HOME=jdk安装路径
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+JRE_HOME=jre安装路径
+
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PATH=;%JAVA_HOME%\bin;%JRE_HOME%\bin
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+CLASSPATH=.;%JAVA_HOME%\lib;%JRE_HOME%\lib;
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;③打开执行stegsolve.jar:在命令行输入:java&nbsp;-jar&nbsp;<全路径>
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;④打开图片,疯狂点击右键,得到二维码,得到答案;
+</br>6.Exif-图片隐写:尝试右键查看图片属性，查找flag字段;
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;尝试使用notepad打开图片，并用二进制、十六进制解码后查找flag字段;
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;尝试使用ASCII解码图片;
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;①查找flag{}字段对应的ASCII码值
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;②查看图片所含的exif信息,寻找可疑字段102,108,97,103,123......125
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;③将以上可疑字段逐个进行ASCII解码,得到答案;
+</br>7.docx-隐写:尝试直接打开docx文件,文件-选项-隐藏文字-打印隐藏文字;
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;尝试查看文档属性摘要;
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;尝试查看文档中隐藏的图片,文件-选项-word选项-高级-显示文档内容-显示图片框;
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;尝试将文件后缀名改为zip,解压后发现flag.xml文件,得到答案;
+</br>
+</br>
+</br>-----------2019-02-24-----------
+</br>8.Forensics1-流量分析:尝试以Wireshark打开文件,根据协议分级功能查看各协议所占百分比,
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据长度排序,查看长度较大的几
+
+个分组,发现几个分组均为连续分组,
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;找到不连续的分组,按时间顺序还
+
+原分组列表,找到其后的分组,
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;发现这是一个文件,右键点击显示
+
+分组字节后,得出答案;
+</br>9.Forensics2-流量分析:尝试以Wireshark打开文件:
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据协议分级功能查看各协议所占
+
+百分比,发现SSH协议占比最大;
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用追踪TCP流功能,发现信息均被
+
+SSH加密过;
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据ARP分组得知,发送方IP地址为
+
+10.0.0.2,硬件地址为00:50:56:8a:8a:b0,接收方IP地址为10.0.0.22,硬件地址为00:50:56:8a:e8:87;
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;浏览所有分组,发现两个txt.gz文
+
+件;
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;暂时没有下一步思路......
+</br>
+</br>
+</br>-----------2019-02-25-----------
+</br>10.PkCrack-已知明文攻击:尝试使用Advanced&nbsp;RAR&nbsp;Password&nbsp;Recovery中的Brute-force暴力破解功能,尝试1-5位密码的暴力破解;
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;尝试使用
+
+Advanced&nbsp;RAR&nbsp;Password&nbsp;Recovery中的Plain-text破解功能,将已给出的zip包中的文件解压后重新压缩,破解密码,发现两个zip文件的压缩方式不同;
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;尝试使用
+
+Advanced&nbsp;RAR&nbsp;Password&nbsp;Recovery中的Plain-text破解功能,直接使用已经给出的zip比对破解,得到secret.txt文件,打开文件得到答案;
+</br>11.Birthday-用字典暴力破解zip密码:已知密码长度即类型,使用ZipPasswordTool暴力破解,选择密码长度范围及类型,即可得到zip密码值,用密码解压zip,得到flag.txt,进而得到答案;
+</br>
+</br>
+</br>-----------2019-02-26-----------
+</br>12.Another&nbsp;01Game-下载、安装python3.7，下载、安装PyCharm编辑器，编写、运行“Hello&nbsp;World”程序&nbsp;，
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;成功导入qrcode模块，但编程中总出现属性错误问题,网络上
+
+的资料大都是以下形式:
+</br>import&nbsp;qrcode&nbsp;
+</br>qr&nbsp;=&nbsp;qrcode.QRCode（
+</br>&nbsp;&nbsp;&nbsp;&nbsp;version&nbsp;=&nbsp;1，
+</br>&nbsp;&nbsp;&nbsp;&nbsp;error_correction&nbsp;=&nbsp;qrcode.constants.ERROR_CORRECT_L，
+</br>&nbsp;&nbsp;&nbsp;&nbsp;box_size&nbsp;=&nbsp;10，
+</br>&nbsp;&nbsp;&nbsp;&nbsp;border&nbsp;=&nbsp;4，
+</br>）
+</br>qr.add_data（'some&nbsp;data'）
+</br>qr.make（fit&nbsp;=&nbsp;True）
+</br>img&nbsp;=&nbsp;qr.make_image（）
+</br>img.save（'/&nbsp;path&nbsp;/&nbsp;imagename.extension'）
+</br>但运行过程中仍有属性错误问题,正在想办法解决......
